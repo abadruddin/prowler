@@ -16,19 +16,28 @@ CHECK_SEVERITY_check112="Critical"
 CHECK_ASFF_TYPE_check112="Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
 CHECK_ALTERNATE_check112="check112"
 
+# check112(){
+#   # "Ensure no root account access key exists (Scored)"
+#   # ensure the access_key_1_active and access_key_2_active fields are set to FALSE.
+#   ROOTKEY1=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $9 }')
+#   ROOTKEY2=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $14 }')
+#   if [ "$ROOTKEY1" == "false" ];then
+#     textPass "No access key 1 found for root"
+#   else
+#     textFail "Found access key 1 for root"
+#   fi
+#   if [ "$ROOTKEY2" == "false" ];then
+#     textPass "No access key 2 found for root"
+#   else
+#     textFail "Found access key 2 for root"
+#   fi
+# }
 check112(){
   # "Ensure no root account access key exists (Scored)"
-  # ensure the access_key_1_active and access_key_2_active fields are set to FALSE.
-  ROOTKEY1=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $9 }')
-  ROOTKEY2=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $14 }')
-  if [ "$ROOTKEY1" == "false" ];then
-    textPass "No access key 1 found for root"
+  COMMAND112=$($AWSCLI iam get-account-summary $PROFILE_OPT --region $REGION --output json --query 'SummaryMap.AccountAccessKeysPresent')
+  if [ "$COMMAND112" == "0" ]; then
+    textPass "No access key found for root"
   else
-    textFail "Found access key 1 for root"
-  fi
-  if [ "$ROOTKEY2" == "false" ];then
-    textPass "No access key 2 found for root"
-  else
-    textFail "Found access key 2 for root"
+    textFail "Access key found for root account"
   fi
 }
