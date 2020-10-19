@@ -18,7 +18,7 @@ CHECK_ALTERNATE_check101="check11"
 
 check11(){
   # "Avoid the use of the root account (Scored)."
-  MAX_DAYS=-1
+  MAX_DAYS=-14
   last_login_dates=$(cat $TEMP_REPORT_FILE | awk -F, '{ print $1,$5,$11,$16 }' | grep '<root_account>' | cut -d' ' -f2,3,4)
 
   failures=0
