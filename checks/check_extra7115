@@ -1,0 +1,42 @@
+#!/usr/bin/env bash 
+
+# Prowler - the handy cloud security tool (copyright 2018) by Toni de la Fuente
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy
+# of the License at http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+DAYS_TO_EXPIRE_THRESHOLD="7"
+
+CHECK_ID_extra7115="7.115"
+CHECK_TITLE_extra7115="[extra7115] Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed"
+CHECK_SCORED_extra7115="NOT_SCORED"
+CHECK_TYPE_extra7115="EXTRA"
+CHECK_SEVERITY_extra7115="High"
+CHECK_ASFF_RESOURCE_TYPE_extra7115="AwsIamAccessKey"
+CHECK_ALTERNATE_check7115="extra7115"
+
+extra7115(){
+  # "Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed"
+  LIST_OF_IAM_CERTS=$($AWSCLI iam list-server-certificates --query 'ServerCertificateMetadataList[*].ServerCertificateName' --output text $PROFILE_OPT --region $REGION)
+  if [[ $LIST_OF_IAM_CERTS ]];then
+    for cert in $LIST_OF_IAM_CERTS; do
+      CERT_DATA=$($AWSCLI iam get-server-certificate $PROFILE_OPT --region $regx --server-certificate-name $cert --query 'ServerCertificate.ServerCertificateMetadata.[Expiration,ServerCertificateName]' --output text)
+      echo "$CERT_DATA" | while read CERT_NAME EXPIRATION; do
+        EXPIRES_DATE=$(timestamp_to_date $EXPIRATION)
+        if [[ $EXPIRES_DATE -le date ]]; then
+          textFail "Certificate for $CERT_NAME is expired"
+        else
+          textPass "Certificate for $CERT_NAME is not expired"
+        fi
+      done
+    done
+  else
+    textInfo "No IAM certificates found"
+  fi
+}
