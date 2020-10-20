@@ -12,7 +12,7 @@
 # specific language governing permissions and limitations under the License.
 
 CHECK_ID_extra7110="7.110"
-CHECK_TITLE_extra7110="[extra7110] Check if Amazon SageMaker Training job volume and output have VPC settings configured."
+CHECK_TITLE_extra7110="[extra7110] Check if Amazon SageMaker Training job have VPC settings configured."
 CHECK_SCORED_extra7110="NOT_SCORED"
 CHECK_TYPE_extra7110="EXTRA"
 CHECK_ASFF_RESOURCE_TYPE_extra7110="AwsSageMakerNotebookInstance"
@@ -25,7 +25,7 @@ extra7110(){
         if [[ $LIST_SM_NB_JOBS ]];then 
             for nb_job_name in $LIST_SM_NB_JOBS; do
                 SM_NB_SUBNETS=$($AWSCLI $PROFILE_OPT --region $regx sagemaker describe-training-job --training-job-name $nb_job_name --query 'VpcConfig.Subnets' --output text)
-                if [[ $SM_NB_SUBNETS -eq "None" ]]; then
+                if [[ $SM_NB_SUBNETS == "None" ]]; then
                     textFail "${regx}: Sagemaker Training job $nb_job_name has VPC settings for the training job volume and output disabled" "${regx}"
                 else
                     textPass "${regx}: Sagemaker Training job $nb_job_name has VPC settings for the training job volume and output enabled" "${regx}"
