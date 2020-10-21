@@ -13,15 +13,15 @@
 
 DAYS_TO_EXPIRE_THRESHOLD="7"
 
-CHECK_ID_extra7115="7.115"
-CHECK_TITLE_extra7115="[extra7115] Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed"
-CHECK_SCORED_extra7115="NOT_SCORED"
-CHECK_TYPE_extra7115="EXTRA"
-CHECK_SEVERITY_extra7115="High"
-CHECK_ASFF_RESOURCE_TYPE_extra7115="AwsIamAccessKey"
-CHECK_ALTERNATE_check7115="extra7115"
+CHECK_ID_custom7115="7.115"
+CHECK_TITLE_custom7115="[custom7115] Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed"
+CHECK_SCORED_custom7115="NOT_SCORED"
+CHECK_TYPE_custom7115="custom"
+CHECK_SEVERITY_custom7115="High"
+CHECK_ASFF_RESOURCE_TYPE_custom7115="AwsIamAccessKey"
+CHECK_ALTERNATE_check7115="custom7115"
 
-extra7115(){
+custom7115(){
   # "Ensure that all the expired SSL/TLS certificates stored in AWS IAM are removed"
   LIST_OF_IAM_CERTS=$($AWSCLI iam list-server-certificates --query 'ServerCertificateMetadataList[*].ServerCertificateName' --output text $PROFILE_OPT --region $REGION)
   if [[ $LIST_OF_IAM_CERTS ]];then
