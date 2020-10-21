@@ -33,15 +33,15 @@
 #     --actions-enabled \
 #     --alarm-actions arn:aws:sns:us-east-1:123456789012:CloudWatchAlarmTopic
 
-CHECK_ID_check315="3.15"
-CHECK_TITLE_check315="[check315] Ensure a log metric filter and alarm exists for AWS Organizations changes"
-CHECK_SCORED_check315="SCORED"
-CHECK_TYPE_check315="LEVEL1"
-CHECK_SEVERITY_check315="Medium"
-CHECK_ASFF_TYPE_check315="Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
-CHECK_ASFF_RESOURCE_TYPE_check315="AwsCloudTrailTrail"
-CHECK_ALTERNATE_check315="check315"
+CHECK_ID_custom315="3.15"
+CHECK_TITLE_custom315="[custom315] Ensure a log metric filter and alarm exists for AWS Organizations changes"
+CHECK_SCORED_custom315="SCORED"
+CHECK_TYPE_custom315="LEVEL1"
+CHECK_SEVERITY_custom315="Medium"
+CHECK_ASFF_TYPE_custom315="Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+CHECK_ASFF_RESOURCE_TYPE_custom315="AwsCloudTrailTrail"
+CHECK_ALTERNATE_custom315="custom315"
 
-check315(){
+custom315(){
   check3x '\$\.eventSource\s*=\s*organizations.amazonaws.com.+\$\.eventName\s*=\s*AcceptHandshake.+\$\.eventName\s*=\s*AttachPolicy.+\$\.eventName\s*=\s*CreateAccount.+\$\.eventName\s*=\s*CreateOrganizationalUnit.+\$\.eventName\s*=\s*CreatePolicy.+\$\.eventName\s*=\s*DeclineHandshake.+\$\.eventName\s*=\s*DeleteOrganization.+\$\.eventName\s*=\s*DeleteOrganizationalUnit.+\$\.eventName\s*=\s*DeletePolicy.+\$\.eventName\s*=\s*DetachPolicy.+\$\.eventName\s*=\s*DisablePolicyType.+\$\.eventName\s*=\s*EnablePolicyType.+\$\.eventName\s*=\s*InviteAccountToOrganization.+\$\.eventName\s*=\s*LeaveOrganization.+\$\.eventName\s*=\s*MoveAccount.+\$\.eventName\s*=\s*RemoveAccountFromOrganization.+\$\.eventName\s*=\s*UpdatePolicy.+\$\.eventName\s*=\s*UpdateOrganizationalUnit'
 }
